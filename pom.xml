@@ -123,6 +123,7 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+             <!--
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-6.0</artifactId>
@@ -130,6 +131,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+              -->
             <dependency>
                 <groupId>org.apache.mina</groupId>
                 <artifactId>mina-parent</artifactId>
@@ -298,17 +300,17 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>4.1.6.Final</version>
+                <version>5.4.19.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-c3p0</artifactId>
-                <version>4.1.6.Final</version>
+                <version>5.4.19.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
-                <version>3.16.1-GA</version>
+                <version>3.23.1-GA</version>
             </dependency>
             <dependency>
                 <groupId>dom4j</groupId>
@@ -324,7 +326,7 @@
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>1.3.170</version>
+                <version>1.4.200</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
