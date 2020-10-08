@@ -25,8 +25,10 @@ import java.util.Map;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.coyote.ProtocolHandler;
+import org.apache.coyote.http11.Http11AprProtocol;
 import org.apache.coyote.http11.Http11Nio2Protocol;
 import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.coyote.http2.Http2Protocol;
 import org.red5.logging.Red5LoggerFactory;
 import org.slf4j.Logger;
 
@@ -76,13 +78,16 @@ public class TomcatConnector {
                     connector.setProperty(key, connectionProperties.get(key));
                 }
             }
-            // turn off native apr support
+            connector.addUpgradeProtocol(new Http2Protocol());
             AprLifecycleListener listener = new AprLifecycleListener();
+            listener.setUseAprConnector(true);
             listener.setSSLEngine("off");
             connector.addLifecycleListener(listener);
             // determine if https support is requested
             if (secure) {
                 // set connection properties
+            	listener.setSSLEngine("on");
+            	
                 connector.setSecure(true);
                 connector.setScheme("https");
             }
@@ -93,6 +98,10 @@ public class TomcatConnector {
             } else if (handler instanceof Http11NioProtocol) {
                 ((Http11NioProtocol) handler).setAddress(address.getAddress());
             }
+            else if (handler instanceof Http11AprProtocol) {
+            	 ((Http11AprProtocol) handler).setAddress(address.getAddress());            	 
+            }
+     
             // set initialized flag
             initialized = true;
         } catch (Throwable t) {
