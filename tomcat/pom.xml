@@ -11,11 +11,20 @@
         <groupId>io.antmedia</groupId>
         <artifactId>parent</artifactId>
         <version>2.3.0-SNAPSHOT</version>
-        <relativePath></relativePath>
     </parent>
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <executable>${maven.compiler.executable}</executable>
+                    <compilerVersion>1.8</compilerVersion>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
