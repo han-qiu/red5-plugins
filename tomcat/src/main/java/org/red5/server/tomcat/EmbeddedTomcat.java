@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.Host;
+import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.startup.ContextConfig;
@@ -36,11 +37,26 @@ import org.apache.catalina.webresources.StandardRoot;
 public class EmbeddedTomcat extends Tomcat {
 
     private long cacheMaxSize = 1024*1024;
+    
+    
+    public Context addWebapp(Host host, String contextPath, String docBase) {
+        LifecycleListener listener = null;
+        try {
+            Class<?> clazz = Class.forName(getHost().getConfigClass());
+            listener = (LifecycleListener) clazz.getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            // Wrap in IAE since we can't easily change the method signature to
+            // to throw the specific checked exceptions
+            throw new IllegalArgumentException(e);
+        }
 
+        return addWebapp(host, contextPath, docBase, listener);
+    }
+    
     /**
      * @see #addWebapp(String, String)
      */
-    public Context addWebapp(Host host, String contextPath, String docBase, ContextConfig config) {
+    public Context addWebapp(Host host, String contextPath, String docBase, LifecycleListener config) {
         Context ctx = createContext(host, contextPath);
         ctx.setPath(contextPath);
         ctx.setDocBase(docBase);
@@ -48,7 +64,7 @@ public class EmbeddedTomcat extends Tomcat {
         ctx.setConfigFile(getWebappConfigFile(docBase, contextPath));
         ctx.addLifecycleListener(config);
         // prevent it from looking ( if it finds one - it'll have dup error )
-        config.setDefaultWebXml(noDefaultWebXmlPath());
+        ((ContextConfig) config).setDefaultWebXml(noDefaultWebXmlPath());
         // get the host first, creates a new std host if not already set
         getHost();
         // reset ParentClassLoader 
