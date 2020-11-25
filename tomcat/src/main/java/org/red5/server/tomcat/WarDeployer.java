@@ -259,5 +259,12 @@ public final class WarDeployer implements InitializingBean, DisposableBean {
         }
 
     }
+    
+    public void undeploy(String name) {
+    	LoaderMXBean loader = getLoader();
+        if (loader != null) {
+            loader.removeContext("/"+name);
+        }
+    }
 
 }
