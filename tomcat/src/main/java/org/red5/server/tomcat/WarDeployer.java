@@ -98,7 +98,7 @@ public final class WarDeployer implements InitializingBean, DisposableBean {
         }
     }
 
-    private void deploy(boolean startApplication) {
+    public void deploy(boolean startApplication) {
         log.info("Deploy wars {} app start", (startApplication ? "with" : "without"));
         if (deploying.compareAndSet(false, true)) {
             // short name
