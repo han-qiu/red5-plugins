@@ -78,7 +78,10 @@ public class TomcatConnector {
                     connector.setProperty(key, connectionProperties.get(key));
                 }
             }
-            connector.addUpgradeProtocol(new Http2Protocol());
+            //TODO
+            //HTTP/2 is not compatible with multipart post requests
+            //https://bz.apache.org/bugzilla/show_bug.cgi?id=65051
+            //connector.addUpgradeProtocol(new Http2Protocol());
             AprLifecycleListener listener = new AprLifecycleListener();
             listener.setUseAprConnector(true);
             listener.setSSLEngine("off");
